@@ -1,6 +1,8 @@
+"use client"
 import Link from 'next/link'
 import { ConnectButton } from 'thirdweb/react'
 import { client } from '../client'
+import { ConnectKitButton } from 'connectkit'
 
 export default function Navbar() {
   return (
@@ -17,7 +19,7 @@ export default function Navbar() {
             <NavLink href="/pools">Pools</NavLink>
             <NavLink href="/mypolicies">My Policies</NavLink>
           </div>
-         <ConnectButton client={client}/>
+         <ConnectKitButton/>
         </div>
       </div>
     </nav>

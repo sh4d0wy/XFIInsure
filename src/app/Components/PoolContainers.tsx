@@ -1,14 +1,34 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PoolInfoCard } from './PoolCards';
+import { usePoolRead } from '../web3/hooks/usePoolRead';
+import { useAccount } from 'wagmi';
 
 const PoolContainers = () => {
-    const [totalPoolSize, setTotalPoolSize] = useState(1000000)
-    const [userStaked, setUserStaked] = useState(5000)
+    const [totalPoolSize, setTotalPoolSize] = useState<number>(0);
+    const [userStaked, setUserStaked] = useState(0)
     const [userRewards, setUserRewards] = useState(250)
     const [depositAmount, setDepositAmount] = useState('')
     const [withdrawAmount, setWithdrawAmount] = useState('')
-  
+
+    const {address} = useAccount();
+    const {data:totalLiquidity,isLoading:LiquidityLoading} = usePoolRead({
+      functionName:"totalLiquidity",
+      args:[]
+    })
+
+    const {data:providerBalance} = usePoolRead({
+      functionName: "getProviderBalance",
+      args:[address]
+    })
+    console.log(totalLiquidity);
+    useEffect(()=>{
+      setTotalPoolSize(Number(totalLiquidity)/10**18);
+      setUserStaked(Number(providerBalance)/10**18);
+
+    },[totalLiquidity,providerBalance])
+   
+
     const handleDeposit = (e:any) => {
       e.preventDefault()
       // Implement deposit logic here
@@ -34,11 +54,11 @@ const PoolContainers = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <PoolInfoCard
               title="Total Insurance Pool"
-              value={`$${totalPoolSize.toLocaleString()}`}
+              value={`${totalPoolSize.toLocaleString()} XFI`}
             />
             <PoolInfoCard
               title="Your Staked Amount"
-              value={`$${userStaked.toLocaleString()}`}
+              value={`${userStaked.toLocaleString()} XFI`}
             />
           </div>
   

@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useManagerRead } from "../web3/hooks/useManagerRead";
+import { useAccount, useTransaction } from "wagmi";
 
 export const MyPolicies = () => {
   const [policies, setPolicies] = useState([
@@ -32,7 +34,19 @@ export const MyPolicies = () => {
       premiumPaid: true,
     },
   ]);
-
+  
+  const {address} = useAccount();
+  
+  const {data} = useManagerRead({
+    functionName:"getAllPoliciesForUser",
+    args:[address]
+  })
+  const userPolicies = Array.isArray(data)?data:[]
+  
+  useEffect(()=>{
+    setPolicies(userPolicies);
+  },[userPolicies])
+  console.log(userPolicies);
   const handlePayPremium = (policyId: number) => {
     // Implement premium payment logic here
     console.log("Paying premium for policy:", policyId);

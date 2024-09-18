@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 import Navbar from "./Components/Navbar";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import WagmiProviderNew from "./WagmiProviderNew";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +14,7 @@ export const metadata: Metadata = {
   description:
     "Starter template for using thirdweb SDK with Next.js App router",
 };
-
+const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThirdwebProvider>
-          <Navbar/>{children}</ThirdwebProvider>
+        <WagmiProviderNew>
+          <Navbar/>
+          {children}
+        </WagmiProviderNew>
       </body>
     </html>
   );

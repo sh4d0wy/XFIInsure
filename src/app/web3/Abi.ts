@@ -1046,7 +1046,7 @@ export const PolicyMaangerAbi = [
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "pure",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -1076,7 +1076,7 @@ export const PolicyMaangerAbi = [
 			},
 			{
 				"internalType": "uint256",
-				"name": "duration",
+				"name": "expirationDate",
 				"type": "uint256"
 			},
 			{
