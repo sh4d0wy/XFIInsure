@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react'
-import { InsurancePoolAddress, safeTokenAddress } from '../Addresses'
+import { InsurancePoolAddress, poolPolygonAddress, safeTokenAddress } from '../Addresses'
 import { InsurancePoolAbi, safeTokenAbi } from '../Abi'
 import { getContract } from "thirdweb";
 import { defineChain } from "thirdweb";
@@ -19,7 +19,7 @@ const contract = getContract({
 
 export const usePoolRead=({functionName,args}:{functionName:string,args?:any})=>{
   const req = useReadContract({
-      address:InsurancePoolAddress,
+      address:poolPolygonAddress,
       abi:InsurancePoolAbi,
       functionName,
       args

@@ -1,3 +1,6 @@
+import { parseEther } from "viem";
+import { useManagerWrite } from "../web3/hooks/useManagerWrite";
+
 // components/PolicyCard.js
 export type policyType={
   owner:string,
@@ -8,8 +11,18 @@ export type policyType={
   isActive:boolean,
   coverageType:string
 }
-export default function PolicyCard({policy}:{policy:policyType}) {
+export default function PolicyCard({policy,onPayPremium,onClaimPolicy}:{policy:policyType,onPayPremium?:(policyId:number)=>void ,onClaimPolicy?:(policyId:number)=>void}) {
   console.log(policy.expirationDate);
+
+  const {write} = useManagerWrite();
+  const handlePurchasePolicy = (policyId:number,premium:number)=>{
+    console.log(BigInt(String(premium)))
+    write({
+      functionName:"purchasePolicy",
+      args:[policyId],
+      value:BigInt(String(premium))
+    })
+  }
     return (
       <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white">
         <h2 className="text-2xl font-semibold mb-4">{policy.title}</h2>
@@ -24,7 +37,7 @@ export default function PolicyCard({policy}:{policy:policyType}) {
           <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
             View Details
           </button>
-          <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300">
+          <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300" onClick={()=>handlePurchasePolicy(1,policy.premium)}>
             Subscribe
           </button>
         </div>

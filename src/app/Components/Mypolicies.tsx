@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useManagerRead } from "../web3/hooks/useManagerRead";
 import { useAccount, useTransaction } from "wagmi";
+import PolicyCard, { policyType } from "./PolicyCard";
 
 export const MyPolicies = () => {
   const [policies, setPolicies] = useState([
@@ -37,24 +38,23 @@ export const MyPolicies = () => {
   
   const {address} = useAccount();
   
-  // const {data} = useManagerRead({
-  //   functionName:"getAllPoliciesForUser",
-  //   args:[address]
-  // })
-  // const userPolicies = Array.isArray(data)?data:[]
+  const {data} = useManagerRead({
+    functionName:"getAllPoliciesForUser",
+    args:[address]
+  })
+
+  const userPolicies = Array.isArray(data)?data:[]
   
-  // useEffect(()=>{
-  //   setPolicies(userPolicies);
-  // },[userPolicies])
-  // console.log(userPolicies);
+
+  console.log(userPolicies);
   const handlePayPremium = (policyId: number) => {
     // Implement premium payment logic here
     console.log("Paying premium for policy:", policyId);
     // Update the policy status after successful payment
     setPolicies(
-      policies.map((policy) =>
+      policies.length>0?policies.map((policy) =>
         policy.id === policyId ? { ...policy, premiumPaid: true } : policy
-      )
+      ):[]
     );
   };
 
@@ -70,9 +70,9 @@ export const MyPolicies = () => {
         <h1 className="text-4xl font-bold text-white mb-8">My Policies</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {policies.map((policy) => (
+          {userPolicies.length>0 && userPolicies.map((policy:any,index) => (
             <PolicyCard
-              key={policy.id}
+              key={index}
               policy={policy}
               onPayPremium={handlePayPremium}
               onClaimPolicy={handleClaimPolicy}
@@ -83,45 +83,49 @@ export const MyPolicies = () => {
     </div>
   );
 };
-function PolicyCard({ policy, onPayPremium, onClaimPolicy }: any) {
-  return (
-    <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white">
-      <h2 className="text-2xl font-semibold mb-4">{policy.name}</h2>
-      <div className="space-y-2 mb-6">
-        <p>
-          <span className="text-blue-300">Coverage:</span> {policy.coverage}
-        </p>
-        <p>
-          <span className="text-blue-300">Premium:</span> {policy.premium}
-        </p>
-        <p>
-          <span className="text-blue-300">Next Payment:</span>{" "}
-          {policy.nextPayment}
-        </p>
-        <p>
-          <span className="text-blue-300">Status:</span> {policy.status}
-        </p>
-        <p>
-          <span className="text-blue-300">Premium Paid:</span>{" "}
-          {policy.premiumPaid ? "Yes" : "No"}
-        </p>
-      </div>
-      <div className="flex flex-col space-y-2">
-        {!policy.premiumPaid && (
-          <button
-            onClick={() => onPayPremium(policy.id)}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300"
-          >
-            Pay Premium
-          </button>
-        )}
-        <button
-          onClick={() => onClaimPolicy(policy.id)}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
-        >
-          Claim Policy
-        </button>
-      </div>
-    </div>
-  );
-}
+// function PolicyCard({ policy, onPayPremium, onClaimPolicy }: any) {
+//   return (
+//       <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white">
+//         <h2 className="text-2xl font-semibold mb-4">{policy.title}</h2>
+//         <div className="space-y-2 mb-6">
+//           <p><span className="text-blue-300">Coverage:</span> {Number(BigInt(policy.coverageAmount))/10**18}</p>
+//           <p><span className="text-blue-300">Premium:</span> {Number(BigInt(policy.premium))/10**18}</p>
+//           <p><span className="text-blue-300">Provider:</span> {policy.owner.slice(0,10)}...</p>
+//           <p><span className="text-blue-300">Type:</span> {policy.coverageType}</p>
+//           <p><span className="text-blue-300">Duration:</span> {new Date(Number(BigInt(policy.expirationDate))*1000  ).toLocaleString()}</p>
+//         </div>
+//         <div className="flex flex-col space-y-2">
+//         {!policy.premiumPaid && (
+//           <button
+//             onClick={() => onPayPremium(policy.id)}
+//             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300"
+//           >
+//             Pay Premium
+//           </button>
+//         )}
+//         <button
+//           onClick={() => onClaimPolicy(policy.id)}
+//           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
+//         >
+//           Claim Policy
+//         </button>
+//       </div>
+//       </div>
+//     // <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white">
+//     //   <h2 className="text-2xl font-semibold mb-4">{policy.title}</h2>
+//     //   <div className="space-y-2 mb-6">
+//     //     <p>
+//     //       <span className="text-blue-300">Coverage:</span> {Number(BigInt(policy.coverageAmount))/(10**18)}
+//     //     </p>
+//     //     <p>
+//     //       <span className="text-blue-300">Premium:</span> {policy.premium}
+//     //     </p>
+//     //     <p>
+//     //       <span className="text-blue-300">Status:</span> {policy.isActive}
+//     //     </p>
+
+//     //   </div>
+     
+//     // </div>
+//   );
+// }

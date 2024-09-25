@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from 'react'
-import { PolicyManagerAddress, safeTokenAddress } from '../Addresses'
+import { managerPolygonAddress, PolicyManagerAddress, safeTokenAddress } from '../Addresses'
 import { PolicyMaangerAbi, safeTokenAbi } from '../Abi'
 import { getContract } from "thirdweb";
 import { defineChain } from "thirdweb";
@@ -33,7 +33,7 @@ const contract = getContract({
 
 export const useManagerRead=({functionName,args}:{functionName:string,args?:any})=>{
     const req = useReadContract({
-        address:PolicyManagerAddress,
+        address:managerPolygonAddress,
         abi:PolicyMaangerAbi,
         functionName,
         args

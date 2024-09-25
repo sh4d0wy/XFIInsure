@@ -1,4 +1,8 @@
-export const safeTokenAddress = "0x5118Df2CDa9e1d0605592d7BAaEBe631196fB18B";
-export const InsurancePoolAddress = "0x88AdBFf91A2d182607546Cf6EA1bFA88B3829B90";
-export const PolicyManagerAddress = "0x7dC0231dfa634c506741BEA718f61B70B245452c";
+export const safeTokenAddress = "0xDF933Cd647f69198D44cC0C6e982568534546f33";
+export const InsurancePoolAddress = "0xDF933Cd647f69198D44cC0C6e982568534546f33";
+export const PolicyManagerAddress = "0xbb255CfFBaEfD5a1b440ebA0FDB80bF4857F2D86";
+
+export const safePolygonAddress = "0x05fE14e05E66DfE798fB81E22B6C89BB0B2EBa59";
+export const poolPolygonAddress = "0x26B5123e5be59A7D5a44EFE389b820d63a471CCa";
+export const managerPolygonAddress = "0x54615178cBd1Dd1011d71415CeD7FCBc5Ef73445";
 

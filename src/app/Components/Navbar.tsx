@@ -3,8 +3,11 @@ import Link from 'next/link'
 import { ConnectButton } from 'thirdweb/react'
 import { client } from '../client'
 import { ConnectKitButton } from 'connectkit'
+import { useAccount } from 'wagmi'
 
 export default function Navbar() {
+  const owner = "0x09D9a6EdfE066fc24F46bA8C2b21736468f2967D"
+  const {address} = useAccount();
   return (
     <nav className="fixed top-0 left-0 right-0 z-10">
       <div className="container mx-auto px-4">
@@ -17,6 +20,15 @@ export default function Navbar() {
           <div className="flex items-center space-x-6">
             <NavLink href="/dashboard">Dashboard</NavLink>
             <NavLink href="/pools">Pools</NavLink>
+            {address == owner ?
+            <>
+            <NavLink href="/createPolicy">Create Policy</NavLink>
+            <NavLink href="/createPolicy">Verify Claims</NavLink>
+            </>:
+            <>
+            <NavLink href="/createPolicy">Claim Policy</NavLink>
+            </>
+          }
             <NavLink href="/mypolicies">My Policies</NavLink>
           </div>
          <ConnectKitButton/>
