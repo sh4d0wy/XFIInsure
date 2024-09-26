@@ -6,6 +6,8 @@ import Navbar from "./Components/Navbar";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import WagmiProviderNew from "./WagmiProviderNew";
+import NextTopLoader from 'nextjs-toploader';
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +27,23 @@ export default function RootLayout({
       <body className={inter.className}>
         <WagmiProviderNew>
           <Navbar/>
+          <NextTopLoader 
+            color="#2562EA"
+            height={5}
+            />
+            <Toaster
+              toastOptions={{
+                className:'bg-black',
+                style:{
+                  color:'#fff',
+                  background:"black",
+                  boxShadow:"5px 6px 10px #011111",
+                  padding:"20px",
+                  borderRadius:"15px",
+                  marginTop:"10px"
+                }
+              }}
+            />
           {children}
         </WagmiProviderNew>
       </body>

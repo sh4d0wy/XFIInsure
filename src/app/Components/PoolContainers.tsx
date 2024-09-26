@@ -7,6 +7,7 @@ import { usePoolWrite } from '../web3/hooks/usePoolWrite';
 import { poolPolygonAddress } from '../web3/Addresses';
 import { InsurancePoolAbi } from '../web3/Abi';
 import { parseEther } from 'viem';
+import toast from 'react-hot-toast';
 
 const PoolContainers = () => {
     const [totalPoolSize, setTotalPoolSize] = useState<number>(0);
@@ -26,14 +27,19 @@ const PoolContainers = () => {
       args:[address]
     })
     
+    const {data:poolRewards} = usePoolRead({
+      functionName:"rewardsOfProviders",
+      args:[address]
+    })
     const {write,isSuccess} = usePoolWrite();
 
     console.log(totalLiquidity);
+
     useEffect(()=>{
       setTotalPoolSize(Number(totalLiquidity)/10**18);
       setUserStaked(Number(providerBalance)/10**18);
-
-    },[totalLiquidity,providerBalance,isSuccess])
+      setUserRewards(Number(poolRewards)/10**18)
+    },[totalLiquidity,providerBalance,isSuccess,poolRewards])
    
 
     
@@ -50,8 +56,18 @@ const PoolContainers = () => {
       address:poolPolygonAddress,
       abi:InsurancePoolAbi,
       eventName: "LiquidityProvided",
-      onLogs:(logs)=>{
-          console.log(logs[0])
+      onLogs(logs){
+          toast.success("Liquidity provided successfully")
+      }
+    })
+    useWatchContractEvent({
+      address:poolPolygonAddress,
+      abi:InsurancePoolAbi,
+      eventName: "LiquidityWithdrawn",
+      onLogs(logs){
+          toast.success("Liquidity Withdrawn Successfully",{
+            duration:4000
+          })
       }
     })
     const handleWithdraw = (e:any) => {
@@ -64,10 +80,6 @@ const PoolContainers = () => {
       });
     }
   
-    const handleClaimRewards = () => {
-      // Implement claim rewards logic here
-      console.log('Claiming rewards')
-    }
     console.log(depositAmount)
     return (
       <div className="min-h-screen w-full bg-gradient-to-br from-black via-blue-900 to-blue-700 py-10 px-20">
@@ -133,14 +145,9 @@ const PoolContainers = () => {
               Your Rewards
             </h2>
             <p className="text-3xl text-green-400 mb-4">
-              ${userRewards.toLocaleString()}
+              {userRewards} XFI
             </p>
-            <button
-              onClick={handleClaimRewards}
-              className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition duration-300"
-            >
-              Claim Rewards
-            </button>
+        
           </div>
         </main>
       </div>

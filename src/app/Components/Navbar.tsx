@@ -26,7 +26,7 @@ export default function Navbar() {
             <NavLink href="/createPolicy">Verify Claims</NavLink>
             </>:
             <>
-            <NavLink href="/createPolicy">Claim Policy</NavLink>
+            <NavLink href="/claimpolicy">Claim Policy</NavLink>
             </>
           }
             <NavLink href="/mypolicies">My Policies</NavLink>

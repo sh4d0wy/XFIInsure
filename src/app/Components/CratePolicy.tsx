@@ -2,16 +2,21 @@
 // pages/create-policy.js
 import { useState } from 'react'
 import Head from 'next/head'
-import { Shield, DollarSign, Calendar, Umbrella } from 'lucide-react'
+import { Shield, DollarSign, Calendar, Umbrella,NotebookPen } from 'lucide-react'
 import { useManagerWrite } from '../web3/hooks/useManagerWrite'
 import { parseEther } from 'viem'
+import { useWatchContractEvent } from 'wagmi'
+import { managerPolygonAddress } from '../web3/Addresses'
+import { PolicyMaangerAbi } from '../web3/Abi'
+import toast from 'react-hot-toast'
 
 export default function CreatePolicy() {
   const [formData, setFormData] = useState({
-    title: '',
+    _title: '',
     coverageAmount: '',
     expirationDate: '',
     coverageType: '',
+    _description:''
   })
   const {write} = useManagerWrite();
 
@@ -29,10 +34,18 @@ export default function CreatePolicy() {
     const timestamp = Math.floor((new Date(formData.expirationDate)).getTime()/1000);
     write({
       functionName:'createPolicy',
-      args:[formData.title,parseEther(formData.coverageAmount), timestamp, formData.coverageType]
+      args:[formData._title,parseEther(formData.coverageAmount), formData._description,timestamp, formData.coverageType]
     })
   }
 
+  useWatchContractEvent({
+    address:managerPolygonAddress,
+    abi:PolicyMaangerAbi,
+    eventName:"PolicyCreated",
+    onLogs() {
+      toast.success('Policy Created')
+    },
+  })
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-blue-900 to-blue-700">
       <Head>
@@ -52,8 +65,8 @@ export default function CreatePolicy() {
             <FormField
               label="Policy Title"
               id="title"
-              name="title"
-              value={formData.title}
+              name="_title"
+              value={formData._title}
               onChange={handleChange}
               icon={<Shield className="text-blue-400" size={20} />}
             />
@@ -77,7 +90,15 @@ export default function CreatePolicy() {
               onChange={handleChange}
               icon={<Calendar className="text-blue-400" size={20} />}
             />
-
+            <FormField
+              label="Description"
+              id="description"
+              name="_description"
+              type="text"
+              value={formData._description}
+              onChange={handleChange}
+              icon={<NotebookPen className="text-blue-400" size={20} />}
+            />
             <div className="relative">
               <label htmlFor="coverageType" className="block text-blue-300 mb-2 font-semibold">
                 Coverage Type
@@ -92,9 +113,10 @@ export default function CreatePolicy() {
                   required
                 >
                   <option value="">Select coverage type</option>
-                  <option value="defi">DeFi Protocol Coverage</option>
-                  <option value="nft">NFT Theft Protection</option>
-                  <option value="smartContract">Smart Contract Vulnerability</option>
+                  <option value="defi_risk">DeFi Risks</option>
+                  <option value="exchange_hacks">Exchange Hacks</option>
+                  <option value="nft_theft">NFT Theft Protection</option>
+                  <option value="smartContract_failure">Smart Contract Vulnerability</option>
                   <option value="cyberSecurity">Cyber Security</option>
                 </select>
                 <Umbrella className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400" size={20} />
