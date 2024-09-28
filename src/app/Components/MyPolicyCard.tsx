@@ -6,36 +6,24 @@ import { useAccount, useWatchContractEvent } from "wagmi";
 import { managerPolygonAddress } from "../web3/Addresses";
 import { PolicyMaangerAbi } from "../web3/Abi";
 import { useManagerRead } from "../web3/hooks/useManagerRead";
+import { policyType } from "./PolicyCard";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-// components/PolicyCard.js
-export type policyType={
-  id:number,
-  owner:string,
-  title:string,
-  coverageAmount:number,
-  premium:number,
-  expirationDate:number,
-  isActive:boolean,
-  coverageType:string,
-  nextPremiumDate:number,
-  description?:string
-}
-export default function PolicyCard({policy,onPayPremium,onClaimPolicy}:{policy:policyType,onPayPremium?:(policyId:number)=>void ,onClaimPolicy?:(policyId:number)=>void}) {
+export default function MyPolicyCard({policy,onPayPremium,onClaimPolicy}:{policy:policyType,onPayPremium?:(policyId:number)=>void ,onClaimPolicy?:(policyId:number)=>void}) {
   const {address} = useAccount();
   const {write,isSuccess} = useManagerWrite();
   const [userPolicy,setPolicy] = useState<null|policyType[]>(null);
   const [flag,setFlag] = useState(false);
-  const handlePurchasePolicy = (policyId:number,premium:number)=>{
-    write({
-      functionName:"purchasePolicy",
+  
+  const {write:payPremium } = useManagerWrite()
+
+  const handlePremiumPay = ({policyId,premium}:{policyId:number,premium:string})=>{
+    payPremium({
+      functionName:"payPremium",
       args:[policyId],
-      value:BigInt(String(premium))
+      value:BigInt(premium)
     })
   }
-
-
   const {data } = useManagerRead({
     functionName:"getAllPoliciesForUser",
     args:[address]
@@ -74,12 +62,7 @@ export default function PolicyCard({policy,onPayPremium,onClaimPolicy}:{policy:p
       })
     }
   })
-  if(policy.owner=="0x0000000000000000000000000000000000000000"){
-    return(
-      <></>
-    )
-  }
-
+    
     return (
       <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white">
         <h2 className="text-2xl font-semibold mb-4">{policy.title}</h2>
@@ -90,29 +73,21 @@ export default function PolicyCard({policy,onPayPremium,onClaimPolicy}:{policy:p
           <p className="flex justify-between"><span className="text-blue-300">Creator:</span> {policy.owner.slice(0,10)}...</p>
           <p className="flex justify-between"><span className="text-blue-300">Type:</span> {policy.coverageType}</p>
           <p className="flex justify-between"><span className="text-blue-300">Expiration Date:</span> {new Date(Number(BigInt(policy.expirationDate))*1000  ).toLocaleDateString()}</p>
+          <p className="flex justify-between"><span className="text-blue-300">Next Premium Date:</span> {new Date(Number(BigInt(policy.nextPremiumDate))*1000  ).toLocaleDateString()}</p>
         </div>
-        {!flag?
+
         <div className="flex justify-center gap-20">
-          <Link href={`/viewdetail/${policy.id}`}>
-        <button className="bg-blue-500 px-4 py-2 rounded-lg text-white" >
-          View Details
-        </button>
-        </Link>
-        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300" onClick={()=>handlePurchasePolicy(policy.id,policy.premium)}>
-          Subscribe
-        </button>
-      </div>:
-      <div className="flex justify-center gap-20">
         <Link href={`/viewdetail/${policy.id}`}>
-        <button className="bg-blue-500 px-4 py-2 rounded-lg text-white"   >
+        <button className="bg-blue-400 text-white rounded-lg px-4 py-2">
           View Details
         </button>
         </Link>
-        <button className="bg-green-900 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300" disabled>
-          Purchased
+
+        <button className="bg-green-500 text-white rounded-lg px-4 py-2" onClick={()=>handlePremiumPay({policyId:policy.id,premium:String(policy.premium)})}>
+          Pay Premium
         </button>
       </div>
-      }
+      
         
       </div>
     )

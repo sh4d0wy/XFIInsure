@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useManagerRead } from "../web3/hooks/useManagerRead";
 import { useAccount, useTransaction } from "wagmi";
 import PolicyCard, { policyType } from "./PolicyCard";
+import MyPolicyCard from "./MyPolicyCard";
 
 export const MyPolicies = () => {
   const [policies, setPolicies] = useState([
@@ -71,7 +72,7 @@ export const MyPolicies = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {userPolicies.length>0 && userPolicies.map((policy:any,index) => (
-            <PolicyCard
+            <MyPolicyCard
               key={index}
               policy={policy}
               onPayPremium={handlePayPremium}

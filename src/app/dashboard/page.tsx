@@ -37,7 +37,7 @@ const page = ()=>{
     },
   ]
   
-
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-blue-900 to-blue-700 px-16 ">
       <main className="container mx-auto px-4 py-32">

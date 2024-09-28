@@ -42,7 +42,7 @@ export default function CreatePolicy() {
     address:managerPolygonAddress,
     abi:PolicyMaangerAbi,
     eventName:"PolicyCreated",
-    onLogs() {
+    onLogs(){
       toast.success('Policy Created')
     },
   })

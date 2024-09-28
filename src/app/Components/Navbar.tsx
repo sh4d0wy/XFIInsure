@@ -4,6 +4,7 @@ import { ConnectButton } from 'thirdweb/react'
 import { client } from '../client'
 import { ConnectKitButton } from 'connectkit'
 import { useAccount } from 'wagmi'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
   const owner = "0x09D9a6EdfE066fc24F46bA8C2b21736468f2967D"
@@ -23,7 +24,7 @@ export default function Navbar() {
             {address == owner ?
             <>
             <NavLink href="/createPolicy">Create Policy</NavLink>
-            <NavLink href="/createPolicy">Verify Claims</NavLink>
+            <NavLink href="/verifypolicy">Verify Claims</NavLink>
             </>:
             <>
             <NavLink href="/claimpolicy">Claim Policy</NavLink>
@@ -39,8 +40,9 @@ export default function Navbar() {
 }
 
 function NavLink({ href, children }:{href:string,children:string}) {
+  const pathName = usePathname();
     return (
-      <Link href={href} className='text-gray-300 hover:text-white transition duration-300'>
+      <Link href={href} className={` hover:text-white transition duration-300 ${pathName===href?"font-bold text-white":"text-gray-300"}`}>
        {children}
       </Link>
     )
