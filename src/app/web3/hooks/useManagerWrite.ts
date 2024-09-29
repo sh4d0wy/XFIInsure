@@ -7,7 +7,7 @@ export const useManagerWrite = ()=>{
     const write = ({functionName,args,value}:{functionName:string,args?:any,value?:bigint})=>{
         writeContract({
             abi:PolicyMaangerAbi,
-            address:managerPolygonAddress,
+            address:PolicyManagerAddress,
             functionName,
             args,
             value

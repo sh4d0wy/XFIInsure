@@ -21,10 +21,9 @@ export const crossFiTestnet = {
 const config = createConfig(
   getDefaultConfig({
     // Your dApps chains
-    chains: [polygonAmoy,crossFiTestnet],
+    chains: [crossFiTestnet],
     transports: {
       // RPC URL for each chain
-      [polygonAmoy.id]:http(),
       [crossFiTestnet.id]:http(),
     },
 

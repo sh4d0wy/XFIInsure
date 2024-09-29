@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { useWriteContract } from 'wagmi'
-import { poolPolygonAddress, safePolygonAddress } from '../web3/Addresses';
+import { InsurancePoolAddress, poolPolygonAddress, safePolygonAddress, safeTokenAddress } from '../web3/Addresses';
 import { InsurancePoolAbi, safeTokenAbi } from '../web3/Abi';
 
 const DevNeeds = () => {
@@ -11,7 +11,7 @@ const DevNeeds = () => {
 
     const mint = ({address,amount}:{address:string,amount:string})=>{
         writeContract({
-            address:safePolygonAddress,
+            address:safeTokenAddress,
             abi:safeTokenAbi,
             functionName: 'mint',
             args:[address,BigInt(amount)*BigInt(10**18)]
@@ -20,7 +20,7 @@ const DevNeeds = () => {
     
     const approve = ({address,amount}:{address:string,amount:string})=>{
         writeContract({
-            address:safePolygonAddress,
+            address:safeTokenAddress,
             abi:safeTokenAbi,
             functionName: 'approve',
             args:[address,BigInt(amount)*BigInt(10**18)]
@@ -28,7 +28,7 @@ const DevNeeds = () => {
     }
     const setPolicyManager = ({address}:{address:string})=>{
         writeContract({
-            address:poolPolygonAddress,
+            address:InsurancePoolAddress,
             abi:InsurancePoolAbi,
             functionName: 'setPolicyManager',
             args:[address]

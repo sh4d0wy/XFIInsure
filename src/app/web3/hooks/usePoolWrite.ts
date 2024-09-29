@@ -1,5 +1,5 @@
 import { useWriteContract } from "wagmi"
-import { managerPolygonAddress, PolicyManagerAddress, poolPolygonAddress } from "../Addresses";
+import { InsurancePoolAddress, managerPolygonAddress, PolicyManagerAddress, poolPolygonAddress } from "../Addresses";
 import { InsurancePoolAbi, PolicyMaangerAbi } from "../Abi";
 
 export const usePoolWrite = ()=>{
@@ -7,7 +7,7 @@ export const usePoolWrite = ()=>{
     const write = ({functionName,args,value}:{functionName:string,args?:any,value?:bigint})=>{
         const result = writeContract({
             abi:InsurancePoolAbi,
-            address:poolPolygonAddress,
+            address:InsurancePoolAddress,
             functionName,
             args,
             value

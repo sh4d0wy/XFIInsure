@@ -7,57 +7,8 @@ import PolicyCard, { policyType } from "./PolicyCard";
 import MyPolicyCard from "./MyPolicyCard";
 
 export const MyPolicies = () => {
-  const [policies, setPolicies] = useState([
-    {
-      id: 1,
-      name: "DeFi Protocol Coverage",
-      coverage: "$100,000",
-      premium: "$500",
-      nextPayment: "2024-05-01",
-      status: "Active",
-      premiumPaid: true,
-    },
-    {
-      id: 2,
-      name: "NFT Theft Protection",
-      coverage: "$50,000",
-      premium: "$250",
-      nextPayment: "2024-04-15",
-      status: "Active",
-      premiumPaid: false,
-    },
-    {
-      id: 3,
-      name: "Smart Contract Vulnerability Insurance",
-      coverage: "$200,000",
-      premium: "$1,000",
-      nextPayment: "2024-06-01",
-      status: "Active",
-      premiumPaid: true,
-    },
-  ]);
   
   const {address} = useAccount();
-  
-  const {data} = useManagerRead({
-    functionName:"getAllPoliciesForUser",
-    args:[address]
-  })
-
-  const userPolicies = Array.isArray(data)?data:[]
-  
-
-  console.log(userPolicies);
-  const handlePayPremium = (policyId: number) => {
-    // Implement premium payment logic here
-    console.log("Paying premium for policy:", policyId);
-    // Update the policy status after successful payment
-    setPolicies(
-      policies.length>0?policies.map((policy) =>
-        policy.id === policyId ? { ...policy, premiumPaid: true } : policy
-      ):[]
-    );
-  };
 
   const handleClaimPolicy = (policyId: number) => {
     // Implement policy claim logic here
@@ -65,20 +16,23 @@ export const MyPolicies = () => {
     // You would typically open a modal or navigate to a claim form here
   };
 
+  const {data:policyLength} = useManagerRead({
+    functionName:"nextPolicyId"
+  })
+  const policyIds = Number(policyLength) ? Array.from({ length: Number(policyLength) }, (_, i) => i) : [];
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-blue-900 to-blue-700 px-20">
       <main className="container mx-auto px-4 py-24">
         <h1 className="text-4xl font-bold text-white mb-8">My Policies</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {userPolicies.length>0 && userPolicies.map((policy:any,index) => (
-            <MyPolicyCard
-              key={index}
-              policy={policy}
-              onPayPremium={handlePayPremium}
-              onClaimPolicy={handleClaimPolicy}
-            />
-          ))}
+        {policyIds.length > 0 ? (
+        policyIds.map((policyId) => (
+          <MyPolicyCard key={policyId} policyId={policyId} />
+        ))
+      ) : (
+        <div>No policies Of User</div>
+      )}
         </div>
       </main>
     </div>

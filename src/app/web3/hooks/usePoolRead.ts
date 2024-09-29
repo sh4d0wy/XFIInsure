@@ -19,7 +19,7 @@ const contract = getContract({
 
 export const usePoolRead=({functionName,args}:{functionName:string,args?:any})=>{
   const req = useReadContract({
-      address:poolPolygonAddress,
+      address:InsurancePoolAddress,
       abi:InsurancePoolAbi,
       functionName,
       args

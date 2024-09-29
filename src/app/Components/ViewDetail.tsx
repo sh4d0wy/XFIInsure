@@ -35,9 +35,10 @@ type policyReceived={
 }
 export default function ViewDetail({policyId}:{policyId:number}) {
     const {data:policy} = useManagerRead({
-        functionName:"getPolicyDetails",
+        functionName:"policies",
         args:[policyId]
-    }) as {data:policyType}
+    }) as {data:any[]}
+
     if(policy==undefined){
         return(<> </>)
     }
@@ -56,14 +57,14 @@ export default function ViewDetail({policyId}:{policyId:number}) {
         </div>
         <div className="max-w-4xl mx-auto bg-black bg-opacity-40 backdrop-blur-md rounded-lg overflow-hidden shadow-2xl">
           <div className="p-8 bg-blue-900 bg-opacity-50">
-            <h1 className="text-4xl font-bold text-white mb-2">{policy.title}</h1>
-            <p className="text-blue-200">Policy ID: {`${policy.id}`}</p>
+            <h1 className="text-4xl font-bold text-white mb-2">{policy[2]}</h1>
+            <p className="text-blue-200">Policy ID: {`${policy[0]}`}</p>
           </div>
           
           <div className="p-8">
             <div className="mb-8">
               <h2 className="text-2xl font-semibold text-white mb-4">Policy Description</h2>
-              <p className="text-gray-300">{policy.description}</p>
+              <p className="text-gray-300">{policy[3]}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -71,22 +72,22 @@ export default function ViewDetail({policyId}:{policyId:number}) {
                 <DetailItem 
                   icon={<DollarSign className="text-green-400 h-6 w-6" />}
                   label="Coverage Amount"
-                  value={`${Number(BigInt(policy.coverageAmount))/10**18} XFI`}
+                  value={`${Number(BigInt(policy[4]))/10**18} XFI`}
                 />
                 <DetailItem 
                   icon={<DollarSign className="text-yellow-400 h-6 w-6" />}
                   label="Premium"
-                  value={`${(Number(BigInt(policy.premium))/10**18).toFixed(4)} XFI`}
+                  value={`${(Number(BigInt(policy[5]))/10**18).toFixed(4)} XFI`}
                 />
                 <DetailItem 
                   icon={<Calendar className="text-blue-400 h-6 w-6" />}
                   label="Policy expiration date"
-                  value={` ${new Date(Number(BigInt(policy.expirationDate))*1000  ).toLocaleDateString()}`}
+                  value={` ${new Date(Number(BigInt(policy[6]))*1000  ).toLocaleDateString()}`}
                 />
                 <DetailItem 
                   icon={<User className="text-purple-400 h-6 w-6" />}
                   label="Policy Creator"
-                  value={`${policy.owner.substring(0,15)+"......"}`}
+                  value={`${policy[1].substring(0,15)+"......"}`}
                 />
               </div>
               <div>
@@ -94,7 +95,7 @@ export default function ViewDetail({policyId}:{policyId:number}) {
                 <DetailItem 
                   icon={<Shield className="text-green-400 h-6 w-6" />}
                   label="Status"
-                  value={policy.isActive?"Active":"Not Active"}
+                  value={policy[7]?"Active":"Not Active"}
                 />
               </div>
             </div>

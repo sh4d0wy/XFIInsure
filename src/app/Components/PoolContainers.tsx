@@ -140,15 +140,7 @@ const PoolContainers = () => {
             </form>
           </div>
 
-          <div className="mt-12 bg-black bg-opacity-50 rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-white mb-4">
-              Your Rewards
-            </h2>
-            <p className="text-3xl text-green-400 mb-4">
-              {userRewards} XFI
-            </p>
-        
-          </div>
+         
         </main>
       </div>
     );

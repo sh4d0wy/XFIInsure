@@ -31,9 +31,9 @@ const contract = getContract({
 //   return({data,isLoading})
 // }
 
-export const useManagerRead=({functionName,args}:{functionName:string,args?:any})=>{
+export const useManagerRead=({functionName,args}:{functionName?:string,args?:any})=>{
     const req = useReadContract({
-        address:managerPolygonAddress,
+        address:PolicyManagerAddress,
         abi:PolicyMaangerAbi,
         functionName,
         args
