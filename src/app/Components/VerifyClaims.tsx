@@ -50,11 +50,13 @@ export default function VerifyClaims() {
               <p className="inline"> Claim {verifiedClaimId} has been verified and processed.</p>
             </div>
           )}
+              <div className='flex flex-col gap-10'>
             {claimIds.map((claimIdFetched,index)=>{
               return(
               <VerifyClaimCard key={index} claimId={claimIdFetched}/>
               )
             })}
+            </div>
          
           {claims?claims.length === 0 && (
             <p className="text-center text-blue-300 mt-4">No pending claims to verify.</p>

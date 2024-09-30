@@ -1,0 +1,53 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Something",
+  "sourceName": "contracts/Something.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "safeTokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "insurancePoolAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "insurancePool",
+      "outputs": [
+        {
+          "internalType": "contract IInsurancePool",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "token",
+      "outputs": [
+        {
+          "internalType": "contract IToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b50604051610160380380610160833981016040819052602c916077565b600080546001600160a01b039384166001600160a01b0319918216179091556001805492909316911617905560a5565b80516001600160a01b0381168114607257600080fd5b919050565b60008060408385031215608957600080fd5b609083605c565b9150609c60208401605c565b90509250929050565b60ad806100b36000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c8063ab2adc00146037578063fc0c546a146065575b600080fd5b6001546049906001600160a01b031681565b6040516001600160a01b03909116815260200160405180910390f35b6000546049906001600160a01b03168156fea2646970667358221220b758a4e811ef72e30ae53d0a8c46164ca6398b0773bcaed9c90775dd5132e6b564736f6c634300081a0033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c8063ab2adc00146037578063fc0c546a146065575b600080fd5b6001546049906001600160a01b031681565b6040516001600160a01b03909116815260200160405180910390f35b6000546049906001600160a01b03168156fea2646970667358221220b758a4e811ef72e30ae53d0a8c46164ca6398b0773bcaed9c90775dd5132e6b564736f6c634300081a0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
